@@ -1,27 +1,29 @@
 from socket import *
-serverName = "192.168.56.1"
-serverPort = 1300
+serverName = "10.1.70.4"
+serverPort = 1200
 clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect((serverName,serverPort))
 
-G = 15
-N = 97
-X = 5
-R1 = (G ** X) % N
+G = 150
+N = 220
+X = 89
+
+
+key_1 = (G ** X) % N
 
 print("G: ", G)
 print("N: ", N)
 print("X: ", X)
-print("R1: ", R1)
+print("R1: ", key_1)
 
-message = f"{G},{N},{R1}"
+message = f"{G},{N},{key_1}"
 
 clientSocket.send(bytes(message, "utf-8"))
 
-R2 = int(clientSocket.recv(1024))
-print("R2: ", R2)
+key_2 = int(clientSocket.recv(1024))
+print("R2: ", key_2)
 
-K = (R2 ** X) % N
+K = (key_2 ** X) % N
 print("K: ", K)
 
 sentence = input("Input lowercase sentence: ")
