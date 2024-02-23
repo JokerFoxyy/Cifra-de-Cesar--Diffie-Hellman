@@ -1,5 +1,5 @@
 from socket import *
-serverPort = 1300
+serverPort = 1200
 serverSocket = socket(AF_INET,SOCK_STREAM)
 serverSocket.bind(("",serverPort))
 serverSocket.listen(5) # o argumento “listen” diz à biblioteca de soquetes que queremos enfileirar no máximo 5 requisições de conexão (normalmente o máximo) antes de recusar começar a recusar conexões externas. Caso o resto do código esteja escrito corretamente, isso deverá ser o suficiente.
@@ -7,19 +7,20 @@ print ("TCP Server\n")
 
 connectionSocket, addr = serverSocket.accept()
 
-print ("Server waiting key\n")
+print ("Server esperando chave\n")
 received_message = connectionSocket.recv(1024)
-G, N, R1 = map(int, received_message.decode("utf-8").split(","))
-Y = 123
+G, N, key_1 = map(int, received_message.decode("utf-8").split(","))
+Y = 1024
+
 print("Y: ", Y)
 
-R2 = (G ** Y) % N
-print("R2: ", R2)
+key_2 = (G ** Y) % N
+print("R2: ", key_2)
 
-K = (R1 ** Y) % N
+K = (key_1 ** Y) % N
 print("K: ", K)
 
-connectionSocket.send(bytes(str(R2), "utf-8"))
+connectionSocket.send(bytes(str(key_2), "utf-8"))
 
 sentence = connectionSocket.recv(65000)
 
