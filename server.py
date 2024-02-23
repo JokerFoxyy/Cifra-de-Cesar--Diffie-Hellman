@@ -11,13 +11,13 @@ print ("Server esperando chave\n")
 received_message = connectionSocket.recv(1024)
 G, N, key_1 = map(int, received_message.decode("utf-8").split(","))
 Y = 1024
+key_2 = (G ** Y) % N
+K = (key_1 ** Y) % N
 
 print("Y: ", Y)
 
-key_2 = (G ** Y) % N
 print("R2: ", key_2)
 
-K = (key_1 ** Y) % N
 print("K: ", K)
 
 connectionSocket.send(bytes(str(key_2), "utf-8"))
